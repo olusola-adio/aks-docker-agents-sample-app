@@ -23,6 +23,7 @@ variables:
   containerRegistry: 'mondevappsharedcr.azurecr.io'
   dockerfilePath: '**/src/AksCalculator/Dockerfile'
   tag: '$(Build.BuildNumber)'
+  selfHostedAksAgent: 'MON - Docker - YouTube'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -37,7 +38,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      name: 'MON - Docker - YouTube'
+      name: $(selfHostedAksAgent)
     steps:
     - task: Docker@2
       displayName: Build and push an image to container registry
@@ -61,7 +62,7 @@ stages:
     displayName: Deploy Pull request
     condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/pull/'))
     pool:
-      name: 'MON - Docker - YouTube' 
+      name: $(selfHostedAksAgent) 
     environment: 'AksCalculatorDemo.$(k8sNamespaceForPR)'
     strategy:
       runOnce:
@@ -119,7 +120,7 @@ stages:
     condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
     displayName: Deploy DEV Job
     pool:
-      name: 'MON - Docker - YouTube' 
+      name: $(selfHostedAksAgent) 
     environment: 'dev.dev'
     strategy:
       runOnce:
@@ -143,7 +144,7 @@ stages:
     condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
     displayName: Deploy QA Job
     pool:
-      name: 'MON - Docker - YouTube' 
+      name: $(selfHostedAksAgent) 
     environment: 'qa.qa'
     strategy:
       runOnce:
@@ -167,7 +168,7 @@ stages:
     condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
     displayName: Deploy STAGING Job
     pool:
-      name: 'MON - Docker - YouTube' 
+      name: $(selfHostedAksAgent) 
     environment: 'staging.staging'
     strategy:
       runOnce:
@@ -191,7 +192,7 @@ stages:
     condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
     displayName: Deploy PROD Job
     pool:
-      name: 'MON - Docker - YouTube' 
+      name: $(selfHostedAksAgent) 
     environment: 'prod.prod'
     strategy:
       runOnce:
