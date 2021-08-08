@@ -23,7 +23,7 @@ variables:
   containerRegistry: 'mondevappsharedcr.azurecr.io'
   dockerfilePath: '**/src/AksCalculator/Dockerfile'
   tag: '$(Build.BuildNumber)'
-  selfHostedAksAgent: 'MON - Docker - YouTube'
+  selfHostedAksAgent: 'MON-Docker-YouTube'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
